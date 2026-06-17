@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "AI 工具选型助手",
-  description: "根据身份和使用场景，对比并选择合适的 AI 工具",
+  title: "AI 竞品分析报告",
+  description:
+    "从产品定位、核心场景、能力边界与商业化路径，对主流 AI 产品进行横向分析。",
 };
 
 export default function RootLayout({
@@ -17,9 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN">
-      <body className={inter.className}>
+      <body>
         <Navbar />
-        <main className="min-h-[calc(100vh-57px)]">{children}</main>
+        <main className="min-h-[calc(100vh-73px)]">{children}</main>
       </body>
     </html>
   );

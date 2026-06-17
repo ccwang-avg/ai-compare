@@ -1,7 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --paper: #f4f0e8;
+  --paper-strong: #efe9de;
+  --ink: #171717;
+  --muted: #5b584f;
+  --line: rgba(25, 31, 35, 0.08);
+  --accent: #8a3b12;
+  --accent-soft: rgba(138, 59, 18, 0.12);
+  --emerald-soft: rgba(52, 116, 87, 0.12);
+  --blue-soft: rgba(55, 94, 151, 0.12);
+  --rose-soft: rgba(128, 59, 66, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(138, 59, 18, 0.08), transparent 30%),
+    radial-gradient(circle at 80% 20%, rgba(55, 94, 151, 0.08), transparent 28%),
+    linear-gradient(180deg, #f5f1e9 0%, #f0ebe1 100%);
+  font-family: "Manrope", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(23, 23, 23, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 23, 23, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px;
+  content: "";
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Cormorant Garamond", serif;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: rgba(138, 59, 18, 0.18);
+}
+
+.report-panel {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 0 16px 48px rgba(41, 32, 23, 0.05);
+  backdrop-filter: blur(14px);
+}
+
+.report-kicker {
+  margin-bottom: 1rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-head h2 {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--ink);
 }

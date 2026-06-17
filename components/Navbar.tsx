@@ -1,31 +1,38 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, X, Sparkles } from "lucide-react";
+import { ChartColumnBig, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const links = [
-  { href: "/", label: "首页" },
-  { href: "/compare", label: "产品对比" },
+  { href: "/", label: "报告首页" },
+  { href: "/compare", label: "对比矩阵" },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2 font-semibold text-slate-900">
-          <Sparkles className="h-5 w-5 text-blue-600" />
-          <span className="text-sm sm:text-base">AI 工具选型助手</span>
+    <header className="sticky top-0 z-50 border-b border-[rgba(25,31,35,0.08)] bg-[rgba(244,240,232,0.9)] backdrop-blur">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+        <Link href="/" className="flex items-center gap-3 text-stone-950">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(25,31,35,0.1)] bg-white/80 shadow-sm">
+            <ChartColumnBig className="h-5 w-5 text-[#8a3b12]" />
+          </div>
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.28em] text-stone-500">
+              Research Edition
+            </div>
+            <div className="text-sm font-semibold sm:text-base">AI 竞品分析报告</div>
+          </div>
         </Link>
 
-        <nav className="hidden items-center gap-1 sm:flex">
+        <nav className="hidden items-center gap-2 sm:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-md px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+              className="rounded-full px-4 py-2 text-sm font-medium text-stone-600 transition hover:bg-white/70 hover:text-stone-950"
             >
               {link.label}
             </Link>
@@ -34,8 +41,8 @@ export default function Navbar() {
 
         <button
           type="button"
-          className="rounded-md p-2 text-slate-600 hover:bg-slate-100 sm:hidden"
-          onClick={() => setOpen(!open)}
+          className="rounded-full p-2 text-stone-600 hover:bg-white/70 sm:hidden"
+          onClick={() => setOpen((current) => !current)}
           aria-label="切换菜单"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -43,12 +50,12 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <nav className="border-t border-slate-200 bg-white px-4 py-2 sm:hidden">
+        <nav className="border-t border-[rgba(25,31,35,0.08)] bg-[rgba(244,240,232,0.95)] px-4 py-3 sm:hidden">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="block rounded-md px-3 py-2 text-sm text-slate-600 hover:bg-slate-100"
+              className="block rounded-xl px-3 py-2 text-sm font-medium text-stone-700 hover:bg-white/70"
               onClick={() => setOpen(false)}
             >
               {link.label}

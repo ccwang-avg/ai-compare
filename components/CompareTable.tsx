@@ -1,189 +1,58 @@
-"use client";
-
-import type { ReactNode } from "react";
-import { matchPersona, shouldShowPersonaMatch } from "@/lib/matchPersona";
-import {
-  MATCH_LEVEL_LABELS,
-  type Persona,
-  type Product,
-} from "@/lib/types";
+import { JUDGMENT_LABELS, type JudgmentKey, type ProductReport } from "@/lib/types";
 
 interface CompareTableProps {
-  products: [Product, Product];
-  persona: Persona;
+  products: ProductReport[];
 }
 
-function TagList({ items }: { items: string[] }) {
+function getLevelClass(level: string) {
+  if (level === "强") return "bg-[#8a3b12] text-white";
+  if (level === "较强") return "bg-[rgba(138,59,18,0.16)] text-[#6f2f0f]";
+  if (level === "中等") return "bg-[rgba(55,94,151,0.12)] text-[#274777]";
+  return "bg-[rgba(91,88,79,0.12)] text-[#4f4b43]";
+}
+
+export default function CompareTable({ products }: CompareTableProps) {
   return (
-    <div className="flex flex-wrap gap-1">
-      {items.map((item) => (
-        <span
-          key={item}
-          className="rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-700"
-        >
-          {item}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function ScoreCell({ score }: { score: number }) {
-  return (
-    <div className="flex items-center gap-2">
-      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-200">
-        <div
-          className="h-full rounded-full bg-blue-600"
-          style={{ width: `${(score / 5) * 100}%` }}
-        />
-      </div>
-      <span className="text-sm font-medium">{score}/5</span>
-    </div>
-  );
-}
-
-function MatchBadge({ level }: { level: "high" | "medium" | "low" }) {
-  const config = MATCH_LEVEL_LABELS[level];
-  return (
-    <span
-      className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium ${config.className}`}
-    >
-      {config.text}
-    </span>
-  );
-}
-
-type RowValue = string | string[] | number | boolean | ReactNode;
-
-interface Row {
-  label: string;
-  values: RowValue[];
-  show?: boolean;
-}
-
-export default function CompareTable({ products, persona }: CompareTableProps) {
-  const showMatch = shouldShowPersonaMatch(persona);
-
-  const rows: Row[] = [
-    {
-      label: "产品类型",
-      values: products.map((p) => p.type),
-    },
-    {
-      label: "适合人群",
-      values: products.map((p) => <TagList key={p.id} items={p.targetUsers} />),
-    },
-    {
-      label: "群体匹配度",
-      values: products.map((p) => (
-        <MatchBadge key={p.id} level={matchPersona(p, persona)} />
-      )),
-      show: showMatch,
-    },
-    {
-      label: "适合场景",
-      values: products.map((p) => <TagList key={p.id} items={p.scenarios} />),
-    },
-    {
-      label: "价格情况",
-      values: products.map((p) => p.pricing),
-    },
-    {
-      label: "中文能力",
-      values: products.map((p) => <ScoreCell key={p.id} score={p.chineseSupport} />),
-    },
-    {
-      label: "搜索能力",
-      values: products.map((p) => <ScoreCell key={p.id} score={p.searchAbility} />),
-    },
-    {
-      label: "文件处理能力",
-      values: products.map((p) => <ScoreCell key={p.id} score={p.fileAbility} />),
-    },
-    {
-      label: "编程能力",
-      values: products.map((p) => <ScoreCell key={p.id} score={p.codingAbility} />),
-    },
-    {
-      label: "Agent 能力",
-      values: products.map((p) => <ScoreCell key={p.id} score={p.agentAbility} />),
-    },
-    {
-      label: "易用性",
-      values: products.map((p) => <ScoreCell key={p.id} score={p.easeOfUse} />),
-    },
-    {
-      label: "是否具备 Agent 能力",
-      values: products.map((p) =>
-        p.agentInfo.hasAgentAbility ? "是" : "否"
-      ),
-    },
-    {
-      label: "Agent 类型",
-      values: products.map((p) => p.agentInfo.agentType),
-    },
-    {
-      label: "自动化程度",
-      values: products.map((p) => p.agentInfo.automationLevel),
-    },
-    {
-      label: "是否需要人工确认",
-      values: products.map((p) =>
-        p.agentInfo.requiresHumanReview ? "是" : "否"
-      ),
-    },
-    {
-      label: "使用风险",
-      values: products.map((p) => (
-        <TagList key={p.id} items={p.agentInfo.risks} />
-      )),
-    },
-    {
-      label: "优点",
-      values: products.map((p) => <TagList key={p.id} items={p.pros} />),
-    },
-    {
-      label: "缺点",
-      values: products.map((p) => <TagList key={p.id} items={p.cons} />),
-    },
-  ];
-
-  const visibleRows = rows.filter((row) => row.show !== false);
-
-  return (
-    <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
-      <table className="min-w-full text-sm">
+    <div className="overflow-x-auto rounded-[28px] border border-[rgba(25,31,35,0.08)] bg-[rgba(255,255,255,0.76)] p-4 shadow-[0_10px_40px_rgba(41,32,23,0.04)]">
+      <table className="min-w-[1160px] w-full border-separate border-spacing-0 text-sm">
         <thead>
-          <tr className="border-b border-slate-200 bg-slate-50">
-            <th className="sticky left-0 z-10 min-w-[120px] bg-slate-50 px-4 py-3 text-left font-medium text-slate-600">
-              对比项
-            </th>
-            {products.map((product) => (
-              <th
-                key={product.id}
-                className="min-w-[200px] px-4 py-3 text-left font-semibold text-slate-900"
-              >
-                {product.name}
-              </th>
-            ))}
+          <tr>
+            {["产品", "主类型", "定位", ...Object.values(JUDGMENT_LABELS), "优势", "风险"].map(
+              (head, index, arr) => (
+                <th
+                  key={head}
+                  className={`border-b border-[rgba(25,31,35,0.08)] bg-[rgba(244,240,232,0.95)] px-4 py-4 text-left font-semibold text-stone-800 ${
+                    index === 0 ? "rounded-tl-2xl" : ""
+                  } ${index === arr.length - 1 ? "rounded-tr-2xl" : ""}`}
+                >
+                  {head}
+                </th>
+              )
+            )}
           </tr>
         </thead>
         <tbody>
-          {visibleRows.map((row, index) => (
-            <tr
-              key={row.label}
-              className={index % 2 === 0 ? "bg-white" : "bg-slate-50/50"}
-            >
-              <td className="sticky left-0 z-10 border-r border-slate-100 bg-inherit px-4 py-3 font-medium text-slate-600">
-                {row.label}
+          {products.map((product, rowIndex) => (
+            <tr key={product.id}>
+              <td className={`border-b border-[rgba(25,31,35,0.08)] px-4 py-4 align-top ${rowIndex === products.length - 1 ? "rounded-bl-2xl" : ""}`}>
+                <div className="font-semibold text-stone-950">{product.name}</div>
+                <div className="text-xs text-stone-500">{product.company}</div>
               </td>
-              {row.values.map((value, i) => (
-                <td key={i} className="px-4 py-3 text-slate-700">
-                  {typeof value === "string" || typeof value === "number"
-                    ? value
-                    : value}
+              <td className="border-b border-[rgba(25,31,35,0.08)] px-4 py-4 align-top text-stone-700">{product.type}</td>
+              <td className="border-b border-[rgba(25,31,35,0.08)] px-4 py-4 align-top text-stone-700">{product.slogan}</td>
+              {(Object.keys(JUDGMENT_LABELS) as JudgmentKey[]).map((key) => (
+                <td key={key} className="border-b border-[rgba(25,31,35,0.08)] px-4 py-4 align-top">
+                  <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getLevelClass(product.judgments[key])}`}>
+                    {product.judgments[key]}
+                  </span>
                 </td>
               ))}
+              <td className="border-b border-[rgba(25,31,35,0.08)] px-4 py-4 align-top text-stone-700">
+                {product.strengths.slice(0, 2).join(" / ")}
+              </td>
+              <td className={`border-b border-[rgba(25,31,35,0.08)] px-4 py-4 align-top text-stone-700 ${rowIndex === products.length - 1 ? "rounded-br-2xl" : ""}`}>
+                {product.risks.slice(0, 2).join(" / ")}
+              </td>
             </tr>
           ))}
         </tbody>

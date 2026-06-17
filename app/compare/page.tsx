@@ -5,8 +5,8 @@ export default function ComparePage() {
   return (
     <Suspense
       fallback={
-        <div className="mx-auto max-w-6xl px-4 py-12 text-center text-slate-500">
-          加载中...
+        <div className="mx-auto max-w-6xl px-4 py-12 text-center text-stone-500">
+          正在加载对比矩阵...
         </div>
       }
     >
